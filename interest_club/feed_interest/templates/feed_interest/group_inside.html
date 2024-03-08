@@ -1,0 +1,127 @@
+{% extends 'feed_interest/layout.html' %}
+
+{% block title %}{{ group_post.group_name }}{% endblock %}
+
+{% block content %}
+
+<style>
+.face{
+  background-color: #0000006b;
+  display: flex;
+  align-items: center;
+  padding: 13px;
+  border-radius: 29px;
+
+}
+.photo{
+    margin-right: 10px;
+    height: 63px;
+    flex-shrink: 0;
+    border-radius: 80%;
+    width: 77px;
+}
+
+p{
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.image{
+  max-width: 40%;
+}
+
+.features {
+  padding: 1em;
+  margin: auto;
+  text-align: center;
+  box-sizing: content-box;
+}
+
+.post {
+    background-color: #8e99a7;
+    padding: 11px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    border-radius: 35px;
+}
+
+.post h3 {
+  font-size: 14px;
+  color: #888;
+}
+
+.post h2 {
+  font-size: 16px;
+  margin-top: 5px;
+
+}
+
+.post img {
+  max-width: 70%;
+}
+
+.text,
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked ~ .text {
+  display: block;
+}
+
+/* Стилизация псевдокнопки */
+.btn {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.info{
+  border-radius: 31px;
+  border: 2px solid rgba(0,0,0,0.3);
+}
+</style>
+<div class="info">
+      <div class="face">
+      {% if group_post.group_picture %}
+        <img class="photo" src="{{ group_post.group_picture.url }}" alt="{{ group_post.group.group_picture }}">
+      {% endif %}
+      <p>{{ group_post.group_name }}</p>
+
+  <div class="sup" style="position: absolute; right: 32px; margin-top: 51px">Подписчиков 232121</div>
+
+
+    </div>
+
+    <label for="pseudoBtn" class="btn">О группе</label>
+
+    <input type="checkbox" id="pseudoBtn">
+    {% if not group_post.group_info %}
+    <div class="text" style="right: 32px;">Описание: <p>ВЛАДЕЛЕЦ НЕ ПРЕДОСТАВИЛ ИНФОМАЦИЮ О ГРУППЕ</p></div>
+
+    {% else %}
+    <div class="text" style="right: 32px;">Описание: <p>{{ group_post.group_info }}</p></div>
+    {% endif %}
+    <div class="text" style="right: 32px;" align="right">Cоздана: <p>{{ group_post.created_at }}</p></div>
+
+</div>
+
+
+<div class="features">
+  {% if group_post %}
+
+  {% for post in group_post.posts.all %}
+
+    <div class="post">
+      {% if post.image %}
+        <img class="image" src="{{ post.image.url }}" alt="{{ post.image }}">
+      {% endif %}
+      <h2>{{ post.text }}</h2>
+      <div class="time_post" align="right">{{ post.created_at|time:"H:i" }}</div>
+    </div>
+  {% endfor %}
+{% endif %}
+</div>
+
+
+{% endblock %}

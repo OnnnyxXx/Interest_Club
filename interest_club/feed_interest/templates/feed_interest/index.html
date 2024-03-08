@@ -1,0 +1,98 @@
+{% extends 'feed_interest/layout.html' %}
+
+{% block title %}Feed{% endblock %}
+
+{% block content %}
+<style>
+.feds{
+  border: 2px solid rgba(0,0,0,0.3);
+  border-radius: 22px;
+}
+
+
+/* Стили для всех групп */
+.group {
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+}
+
+/* Стили для названий групп */
+.group a {
+  font-size: 20px;
+  text-decoration: none;
+}
+.group_picture {
+    margin-right: 10px;
+    height: 63px;
+    flex-shrink: 0;
+    border-radius: 80%;
+    width: 77px;
+}
+
+/* Стили для каждого поста */
+.post {
+  background-color: #e9e6e6;
+  padding: 3px;
+  margin-bottom: 1px;
+  margin-top: 27px;
+  border-radius: 20px;
+}
+
+.post h3 {
+  font-size: 14px;
+  color: #888;
+}
+
+.post h2 {
+  font-size: 16px;
+  margin-top: 5px;
+
+}
+
+.post img {
+  max-width: 70%;
+}
+
+.features {
+  padding: 1em;
+  margin: auto;
+  text-align: center;
+  box-sizing: content-box;
+}
+</style>
+<body>
+  {% for feed in feeds %}
+    {% for post in feed.posts.all %}
+        <div class="features">
+
+          <div class="feds">
+
+              <div class="group">
+                <img class="group_picture" src="{{ feed.group_picture.url }}" alt="{{ feed.group_picture }}">
+                <a href="{% url 'group_inside' feed.id %}"><p>{{ feed.group_name }}</p></a>
+              </div>
+
+              <div class="posts">
+
+                  <div class="post">
+                    {% if post.image %}
+                      <img src="{{ post.image.url }}" alt="{{ post.image }}">
+                    {% endif %}
+                    <h2>{{ post.text|truncatewords:10  }}</h2>
+                      <div class="time_post" align="right">{{ post.created_at|time:"H:i" }}</div>
+                  </div>
+
+              </div>
+
+          </div>
+
+        </div>
+      {% endfor %}
+
+  {% endfor %}
+</body>
+
+
+{% endblock %}
